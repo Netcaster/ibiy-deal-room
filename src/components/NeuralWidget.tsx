@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, X, Zap } from "lucide-react";
+import { X } from "lucide-react";
 
 const NEURAL_SVG = (
   <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,19 +32,6 @@ const CLOSE_SVG = (
 const BUBBLE_COLOR = "#6366f1";
 const BUBBLE_DARK  = "#4f46e5";
 
-const quickFacts = [
-  "$3MM license-only opportunity",
-  "Prepaid wearable infrastructure",
-  "ARIA 2027 anchor event",
-  "R.I.S.E. resident lifecycle model",
-];
-
-const panelLinks = [
-  { label: "View Investor Deck",  href: "#documents" },
-  { label: "Run Revenue Model",   href: "#scenarios" },
-  { label: "Contact Deal Room",   href: "#contact"   },
-];
-
 export function NeuralWidget() {
   const [open, setOpen] = useState(false);
 
@@ -73,12 +60,12 @@ export function NeuralWidget() {
           transition:     "transform 0.2s ease, box-shadow 0.2s ease",
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.transform  = "scale(1.08)";
-          e.currentTarget.style.boxShadow  = "0 6px 28px rgba(0,0,0,0.38)";
+          e.currentTarget.style.transform = "scale(1.08)";
+          e.currentTarget.style.boxShadow = "0 6px 28px rgba(0,0,0,0.38)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform  = "";
-          e.currentTarget.style.boxShadow  = "0 4px 20px rgba(0,0,0,0.28)";
+          e.currentTarget.style.transform = "";
+          e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.28)";
         }}
       >
         {open ? CLOSE_SVG : NEURAL_SVG}
@@ -137,10 +124,14 @@ export function NeuralWidget() {
             {/* Body */}
             <div style={{
               background: "#06101a",
-              padding:    "16px 16px 8px",
+              padding:    "16px",
               flex:       1,
+              minHeight:  "200px",
+              display:    "flex",
+              flexDirection: "column",
+              gap:        12,
             }}>
-              <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+              <div style={{ display: "flex", gap: 8 }}>
                 <div style={{
                   width: 28, height: 28, borderRadius: "50%",
                   background: BUBBLE_COLOR,
@@ -148,52 +139,16 @@ export function NeuralWidget() {
                   flexShrink: 0, fontSize: 11, fontWeight: 600, color: "#fff",
                 }}>AI</div>
                 <div style={{
-                  background:    "#102030",
-                  borderRadius:  "4px 14px 14px 14px",
-                  padding:       "9px 12px",
-                  fontSize:      13.5,
-                  lineHeight:    1.55,
-                  color:         "#eaf0f7",
-                  maxWidth:      "82%",
+                  background:   "#102030",
+                  borderRadius: "4px 14px 14px 14px",
+                  padding:      "9px 12px",
+                  fontSize:     13.5,
+                  lineHeight:   1.55,
+                  color:        "#eaf0f7",
+                  maxWidth:     "82%",
                 }}>
                   Hi! I'm the AI assistant for <strong>IBIY</strong>. How can I help you today?
                 </div>
-              </div>
-
-              {quickFacts.map((f) => (
-                <div key={f} style={{
-                  display: "flex", alignItems: "center", gap: 8,
-                  padding: "7px 0",
-                  borderBottom: "1px solid rgba(255,255,255,0.06)",
-                  color: "#94A3B8", fontSize: 12,
-                }}>
-                  <Zap size={11} color={BUBBLE_COLOR} />
-                  {f}
-                </div>
-              ))}
-
-              <div style={{ display: "flex", flexDirection: "column", gap: 7, paddingTop: 12, paddingBottom: 4 }}>
-                {panelLinks.map((link) => (
-                  <a key={link.label} href={link.href} onClick={() => setOpen(false)}
-                    style={{
-                      display: "flex", alignItems: "center", justifyContent: "space-between",
-                      padding:        "9px 13px",
-                      borderRadius:   10,
-                      background:     "rgba(99,102,241,0.10)",
-                      border:         "1px solid rgba(99,102,241,0.22)",
-                      color:          "#a5b4fc",
-                      fontSize:       13,
-                      fontWeight:     500,
-                      textDecoration: "none",
-                      transition:     "background 0.15s",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.20)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.10)")}
-                  >
-                    {link.label}
-                    <ArrowRight size={13} />
-                  </a>
-                ))}
               </div>
             </div>
 
