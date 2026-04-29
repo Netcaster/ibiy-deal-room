@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { NeuralWidget } from "./NeuralWidget";
 import {
   ArrowRight,
   BarChart3,
@@ -844,7 +843,6 @@ export default function TpgIbiyCoverPage({ onEnter }: { onEnter: () => void }) {
         <Divider />
         <InvestorSection onEnter={onEnter} />
         <Footer />
-        <NeuralWidget color="#7551fb" colorDark="#5b3fd4" />
       </div>
     </ThemeCtx.Provider>
   );
