@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input[type="range"] {
+  accent-color: #22d3ee;
+}
+
+select {
+  color: white;
+  appearance: none;
+}
+
+select option {
+  background: #0f172a;
+  color: white;
+}
