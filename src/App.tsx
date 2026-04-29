@@ -1,5 +1,13 @@
-import TpgIbiyDealRoomUI from './components/TpgIbiyDealRoomUI'
+import { useState } from "react";
+import TpgIbiyCoverPage from "./components/TpgIbiyCoverPage";
+import TpgIbiyDealRoomUI from "./components/TpgIbiyDealRoomUI";
 
 export default function App() {
-  return <TpgIbiyDealRoomUI />
+  const [page, setPage] = useState<"cover" | "deal-room">("cover");
+
+  if (page === "deal-room") {
+    return <TpgIbiyDealRoomUI />;
+  }
+
+  return <TpgIbiyCoverPage onEnter={() => setPage("deal-room")} />;
 }
