@@ -6,7 +6,7 @@ export default function App() {
   const [page, setPage] = useState<"cover" | "deal-room">("cover");
 
   if (page === "deal-room") {
-    return <TpgIbiyDealRoomUI />;
+    return <TpgIbiyDealRoomUI onBack={() => setPage("cover")} />;
   }
 
   return <TpgIbiyCoverPage onEnter={() => setPage("deal-room")} />;

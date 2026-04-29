@@ -671,10 +671,11 @@ function DocumentsPanel() {
 interface DealRoomProps {
   user: User;
   onLogout: () => void;
+  onBack: () => void;
   isDark: boolean;
 }
 
-function DealRoom({ user, onLogout, isDark }: DealRoomProps) {
+function DealRoom({ user, onLogout, onBack, isDark }: DealRoomProps) {
   const T = useT();
   const [activeScenario, setActiveScenario] = useState<ScenarioKey>("aria");
 
@@ -688,6 +689,14 @@ function DealRoom({ user, onLogout, isDark }: DealRoomProps) {
       <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ borderBottom: `1px solid ${T.border}`, background: T.navBg }}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <div className="flex items-center gap-3">
+            <button
+              onClick={onBack}
+              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition hover:opacity-80"
+              style={{ background: "rgba(117,81,251,0.12)", color: "#7551fb", border: "1px solid rgba(117,81,251,0.2)" }}
+              title="Back to overview"
+            >
+              ← Overview
+            </button>
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl" style={{ background: "#7551fb" }}>
               <Watch className="h-5 w-5 text-white" />
             </div>
@@ -746,20 +755,6 @@ function DealRoom({ user, onLogout, isDark }: DealRoomProps) {
         <AiRevenuePanel activeScenario={activeScenario} />
         <DocumentsPanel />
 
-        {/* CTA */}
-        <section className="rounded-[2rem] border border-emerald-300/20 bg-emerald-300/10 p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold text-white">Recommended next step</h2>
-              <p className="mt-2 text-sm leading-6 text-emerald-50">
-                Replace demo login with authenticated deal-room access, upload the investor deck and term sheet, then connect scenario exports to CRM for investor follow-up.
-              </p>
-            </div>
-            <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 font-bold text-slate-950 hover:bg-emerald-200">
-              Mark Investor Ready <CheckCircle2 className="h-4 w-4" />
-            </button>
-          </div>
-        </section>
       </main>
     </div>
   );
@@ -767,7 +762,7 @@ function DealRoom({ user, onLogout, isDark }: DealRoomProps) {
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 
-export default function TpgIbiyDealRoomUI() {
+export default function TpgIbiyDealRoomUI({ onBack }: { onBack?: () => void }) {
   const [user, setUser] = useState<User | null>(null);
   const [isDark, setIsDark] = useState(true);
   const T = isDark ? dark : light;
@@ -776,7 +771,7 @@ export default function TpgIbiyDealRoomUI() {
   return (
     <ThemeCtx.Provider value={ctx}>
       {user ? (
-        <DealRoom user={user} onLogout={() => setUser(null)} isDark={isDark} />
+        <DealRoom user={user} onLogout={() => setUser(null)} onBack={onBack ?? (() => setUser(null))} isDark={isDark} />
       ) : (
         <PortalLogin onEnter={setUser} isDark={isDark} />
       )}
