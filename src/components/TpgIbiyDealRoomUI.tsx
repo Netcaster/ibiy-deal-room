@@ -356,9 +356,6 @@ function PortalLogin({ onEnter, isDark }: PortalLoginProps) {
               </button>
             </form>
 
-            <div className="mt-5 rounded-2xl p-4 text-sm leading-6" style={{ border: "1px solid rgba(63,224,253,0.20)", background: "rgba(63,224,253,0.08)", color: "#b2f5fe" }}>
-              Recommended production behavior: send access request to CRM, approve user, issue tokenized link, track document views and scenario exports.
-            </div>
           </div>
         </div>
       </div>
