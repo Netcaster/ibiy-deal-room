@@ -6,13 +6,17 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6, button, .font-semibold, .font-bold {
+  font-family: 'Poppins', sans-serif;
+}
+
 input[type="range"] {
-  accent-color: #22d3ee;
+  accent-color: #7551fb;
 }
 
 select {

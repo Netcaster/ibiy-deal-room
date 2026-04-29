@@ -138,7 +138,7 @@ function MetricCard({ label, value, note, icon: Icon }: MetricCardProps) {
       className="rounded-3xl border border-white/10 bg-white/[0.06] p-5 shadow-xl shadow-black/20 backdrop-blur"
     >
       <div className="flex items-center justify-between gap-4">
-        <div className="rounded-2xl bg-cyan-300/15 p-3 text-cyan-200">
+        <div className="rounded-2xl p-3" style={{ background: "rgba(117,81,251,0.15)", color: "#3fe0fd" }}>
           <Icon className="h-6 w-6" />
         </div>
         <div className="text-right text-xs uppercase tracking-[0.18em] text-slate-500">{label}</div>
@@ -160,22 +160,25 @@ function PortalLogin({ onEnter }: PortalLoginProps) {
   const [role, setRole] = useState("Investor");
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 px-5 py-10 text-white">
+    <div className="relative min-h-screen overflow-hidden px-5 py-10 text-white" style={{ background: "#020202" }}>
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[-12%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-cyan-400/20 blur-3xl" />
-        <div className="absolute bottom-[-20%] right-[-10%] h-[520px] w-[520px] rounded-full bg-indigo-600/20 blur-3xl" />
+        <div className="absolute left-1/2 top-[-12%] h-[520px] w-[520px] -translate-x-1/2 rounded-full blur-3xl" style={{ background: "rgba(117,81,251,0.22)" }} />
+        <div className="absolute bottom-[-20%] right-[-10%] h-[520px] w-[520px] rounded-full blur-3xl" style={{ background: "rgba(63,224,253,0.15)" }} />
       </div>
 
       <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl items-center justify-center">
         <div className="grid w-full items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200">
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.22em]"
+              style={{ border: "1px solid rgba(117,81,251,0.35)", background: "rgba(117,81,251,0.12)", color: "#a98fff" }}
+            >
               <LockKeyhole className="h-4 w-4" /> TPG × IBIY Deal Room
             </div>
-            <h1 className="mt-7 text-5xl font-semibold tracking-tight md:text-7xl">
+            <h1 className="mt-7 text-5xl font-semibold tracking-tight md:text-7xl" style={{ fontFamily: "'Poppins', sans-serif" }}>
               Private investor access for prepaid wearable infrastructure.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300" style={{ fontFamily: "'Lato', sans-serif" }}>
               Review the $3MM license opportunity, ARIA 2027 anchor deployment, multi-vertical expansion model, yearly projections, and AI-guided revenue scenarios.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -194,11 +197,11 @@ function PortalLogin({ onEnter }: PortalLoginProps) {
 
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-7 shadow-2xl shadow-black/30 backdrop-blur">
             <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-cyan-300 p-3 text-slate-950">
-                <KeyRound className="h-6 w-6" />
+              <div className="rounded-2xl p-3" style={{ background: "#7551fb" }}>
+                <KeyRound className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold">Enter Deal Room</h2>
+                <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>Enter Deal Room</h2>
                 <p className="text-sm text-slate-400">Secure investor access portal.</p>
               </div>
             </div>
@@ -212,8 +215,8 @@ function PortalLogin({ onEnter }: PortalLoginProps) {
             >
               <label className="block">
                 <span className="mb-2 block text-sm text-slate-300">Email</span>
-                <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3">
-                  <Mail className="h-5 w-5 text-cyan-200" />
+                <div className="flex items-center gap-3 rounded-2xl border border-white/10 px-4 py-3" style={{ background: "rgba(2,2,2,0.6)" }}>
+                  <Mail className="h-5 w-5" style={{ color: "#3fe0fd" }} />
                   <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -228,7 +231,8 @@ function PortalLogin({ onEnter }: PortalLoginProps) {
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm outline-none"
+                  className="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm outline-none"
+                  style={{ background: "rgba(2,2,2,0.6)" }}
                 >
                   <option>Investor</option>
                   <option>Strategic Partner</option>
@@ -240,15 +244,13 @@ function PortalLogin({ onEnter }: PortalLoginProps) {
 
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-cyan-300 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-200"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3 font-bold text-white transition hover:opacity-90"
+                style={{ background: "#7551fb", fontFamily: "'Poppins', sans-serif" }}
               >
                 Unlock Portal <ArrowRight className="h-4 w-4" />
               </button>
             </form>
 
-            <div className="mt-5 rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4 text-sm leading-6 text-emerald-100">
-              Recommended production behavior: send access request to CRM, approve user, issue tokenized link, track document views and scenario exports.
-            </div>
           </div>
         </div>
       </div>
@@ -313,17 +315,21 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
     <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-6 shadow-2xl shadow-black/25 backdrop-blur">
       <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full bg-cyan-300 px-4 py-2 text-sm font-bold text-slate-950">
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white"
+            style={{ background: "#7551fb", fontFamily: "'Poppins', sans-serif" }}
+          >
             <ScenarioIcon className="h-4 w-4" /> Scenario Engine
           </div>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight">Live investor revenue model</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>Live investor revenue model</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300" style={{ fontFamily: "'Lato', sans-serif" }}>
             Select a deployment, step through the activation flow, then model prepaid revenue, yearly stacking, and sponsor/vendor upside.
           </p>
         </div>
         <button
           onClick={exportSnapshot}
           className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-white/15"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           <Download className="h-4 w-4" /> Export Snapshot
         </button>
@@ -337,36 +343,41 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
             <button
               key={key}
               onClick={() => applyScenario(key)}
-              className={`rounded-2xl border p-4 text-left transition ${
-                active ? "border-cyan-300/50 bg-cyan-300/15" : "border-white/10 bg-slate-950/40 hover:bg-white/10"
-              }`}
+              className="rounded-2xl border p-4 text-left transition"
+              style={
+                active
+                  ? { border: "1px solid rgba(117,81,251,0.5)", background: "rgba(117,81,251,0.15)" }
+                  : { border: "1px solid rgba(255,255,255,0.1)", background: "rgba(2,2,2,0.4)" }
+              }
             >
-              <Icon className={active ? "h-5 w-5 text-cyan-200" : "h-5 w-5 text-slate-400"} />
-              <div className="mt-3 font-semibold text-white">{item.label}</div>
-              <div className="mt-1 text-xs leading-5 text-slate-400">{item.description}</div>
+              <Icon className="h-5 w-5" style={{ color: active ? "#3fe0fd" : "#64748b" }} />
+              <div className="mt-3 font-semibold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>{item.label}</div>
+              <div className="mt-1 text-xs leading-5 text-slate-400" style={{ fontFamily: "'Lato', sans-serif" }}>{item.description}</div>
             </button>
           );
         })}
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
-        <div className="rounded-[2rem] border border-white/10 bg-slate-950/50 p-6 text-center">
+        <div className="rounded-[2rem] border border-white/10 p-6 text-center" style={{ background: "rgba(2,2,2,0.5)" }}>
           <motion.div
             onClick={() => setStep((s) => (s < activationSteps.length - 1 ? s + 1 : 0))}
-            className="relative mx-auto flex h-36 w-36 cursor-pointer items-center justify-center rounded-full border border-cyan-300/50 bg-slate-950"
+            className="relative mx-auto flex h-36 w-36 cursor-pointer items-center justify-center rounded-full"
+            style={{ border: "1px solid rgba(117,81,251,0.5)", background: "#020202" }}
             animate={{ scale: step > 0 ? 1.06 : 1 }}
           >
-            <Watch className="h-10 w-10 text-cyan-200" />
+            <Watch className="h-10 w-10" style={{ color: "#3fe0fd" }} />
             {step > 0 && (
               <motion.div
                 initial={{ scale: 1, opacity: 0.6 }}
                 animate={{ scale: 2.1, opacity: 0 }}
                 transition={{ duration: 1.1, repeat: Infinity }}
-                className="absolute h-full w-full rounded-full border border-cyan-300"
+                className="absolute h-full w-full rounded-full"
+                style={{ border: "1px solid #7551fb" }}
               />
             )}
           </motion.div>
-          <div className="mt-5 text-xl font-semibold text-cyan-100">{activationSteps[step]}</div>
+          <div className="mt-5 text-xl font-semibold" style={{ color: "#3fe0fd", fontFamily: "'Poppins', sans-serif" }}>{activationSteps[step]}</div>
           <div className="mt-2 text-sm text-slate-400">Click the bracelet node to advance activation.</div>
 
           <div className="mt-7 flex flex-wrap justify-center gap-3">
@@ -386,12 +397,17 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-7 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4"
+              className="mt-7 rounded-2xl p-4"
+              style={{ border: "1px solid rgba(117,81,251,0.25)", background: "rgba(117,81,251,0.1)" }}
             >
-              <div className="text-xs uppercase tracking-[0.18em] text-cyan-200">Sponsor Trigger</div>
+              <div className="text-xs uppercase tracking-[0.18em]" style={{ color: "#a98fff" }}>Sponsor Trigger</div>
               <div className="mt-3 flex flex-wrap justify-center gap-2">
                 {["Hello Energy", "VIBE Water", "Sponsor SKU"].map((s) => (
-                  <span key={s} className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-bold text-slate-950">
+                  <span
+                    key={s}
+                    className="rounded-full px-3 py-1 text-xs font-bold text-white"
+                    style={{ background: "#7551fb", fontFamily: "'Poppins', sans-serif" }}
+                  >
                     {s}
                   </span>
                 ))}
@@ -407,47 +423,31 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
             <MetricCard label="Total Modeled" value={formatMoney(totalModeled)} note="Prepaid + modeled upside." icon={TrendingUp} />
           </div>
 
-          <div className="mt-6 rounded-[2rem] border border-white/10 bg-slate-950/50 p-5">
+          <div className="mt-6 rounded-[2rem] border border-white/10 p-5" style={{ background: "rgba(2,2,2,0.5)" }}>
             <div className="grid gap-5 md:grid-cols-2">
               <label>
                 <div className="mb-2 flex justify-between text-sm text-slate-300">
                   <span>Users</span><span>{users.toLocaleString()}</span>
                 </div>
-                <input
-                  type="range" min="1000" max="1000000" step="1000"
-                  value={users} onChange={(e) => setUsers(Number(e.target.value))}
-                  className="w-full"
-                />
+                <input type="range" min="1000" max="1000000" step="1000" value={users} onChange={(e) => setUsers(Number(e.target.value))} className="w-full" />
               </label>
               <label>
                 <div className="mb-2 flex justify-between text-sm text-slate-300">
                   <span>Allocation</span><span>${allocation}</span>
                 </div>
-                <input
-                  type="range" min="10" max="100" step="5"
-                  value={allocation} onChange={(e) => setAllocation(Number(e.target.value))}
-                  className="w-full"
-                />
+                <input type="range" min="10" max="100" step="5" value={allocation} onChange={(e) => setAllocation(Number(e.target.value))} className="w-full" />
               </label>
               <label>
                 <div className="mb-2 flex justify-between text-sm text-slate-300">
                   <span>Events / Deployments</span><span>{events}</span>
                 </div>
-                <input
-                  type="range" min="1" max="150" step="1"
-                  value={events} onChange={(e) => setEvents(Number(e.target.value))}
-                  className="w-full"
-                />
+                <input type="range" min="1" max="150" step="1" value={events} onChange={(e) => setEvents(Number(e.target.value))} className="w-full" />
               </label>
               <label>
                 <div className="mb-2 flex justify-between text-sm text-slate-300">
                   <span>Sponsor Multiplier</span><span>{sponsorMultiplier.toFixed(2)}x</span>
                 </div>
-                <input
-                  type="range" min="1" max="3" step="0.05"
-                  value={sponsorMultiplier} onChange={(e) => setSponsorMultiplier(Number(e.target.value))}
-                  className="w-full"
-                />
+                <input type="range" min="1" max="3" step="0.05" value={sponsorMultiplier} onChange={(e) => setSponsorMultiplier(Number(e.target.value))} className="w-full" />
               </label>
             </div>
           </div>
@@ -497,38 +497,30 @@ function AiRevenuePanel({ activeScenario }: AiRevenuePanelProps) {
   return (
     <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-6 shadow-2xl shadow-black/25">
       <div className="flex items-center gap-3">
-        <div className="rounded-2xl bg-indigo-300/15 p-3 text-indigo-200">
+        <div className="rounded-2xl p-3" style={{ background: "rgba(63,224,253,0.12)", color: "#3fe0fd" }}>
           <Sparkles className="h-6 w-6" />
         </div>
         <div>
-          <h2 className="text-2xl font-semibold">AI Suggested Revenue Scenarios</h2>
+          <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>AI Suggested Revenue Scenarios</h2>
           <p className="text-sm text-slate-400">Connect to internal model or LLM endpoint for production use.</p>
         </div>
       </div>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
         <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300">
-            <span>Rooms / Units</span><span>{venueRooms.toLocaleString()}</span>
-          </div>
+          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>Rooms / Units</span><span>{venueRooms.toLocaleString()}</span></div>
           <input type="range" min="500" max="10000" step="100" value={venueRooms} onChange={(e) => setVenueRooms(Number(e.target.value))} className="w-full" />
         </label>
         <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300">
-            <span>Guests / Unit</span><span>{guestsPerRoom}</span>
-          </div>
+          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>Guests / Unit</span><span>{guestsPerRoom}</span></div>
           <input type="range" min="1" max="4" step="1" value={guestsPerRoom} onChange={(e) => setGuestsPerRoom(Number(e.target.value))} className="w-full" />
         </label>
         <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300">
-            <span>Events / Year</span><span>{events}</span>
-          </div>
+          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>Events / Year</span><span>{events}</span></div>
           <input type="range" min="1" max="100" step="1" value={events} onChange={(e) => setEvents(Number(e.target.value))} className="w-full" />
         </label>
         <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300">
-            <span>IBIY Allocation</span><span>${allocation}</span>
-          </div>
+          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>IBIY Allocation</span><span>${allocation}</span></div>
           <input type="range" min="10" max="100" step="5" value={allocation} onChange={(e) => setAllocation(Number(e.target.value))} className="w-full" />
         </label>
       </div>
@@ -540,8 +532,11 @@ function AiRevenuePanel({ activeScenario }: AiRevenuePanelProps) {
         <MetricCard label="Blended Upside" value={formatMoney(blended)} note="Includes sponsor layer." icon={Zap} />
       </div>
 
-      <div className="mt-6 rounded-3xl border border-indigo-300/20 bg-indigo-300/10 p-5 text-sm leading-7 text-indigo-50">
-        <strong>AI Recommendation:</strong> {recommendation}
+      <div
+        className="mt-6 rounded-3xl p-5 text-sm leading-7"
+        style={{ border: "1px solid rgba(117,81,251,0.25)", background: "rgba(117,81,251,0.1)", color: "#d4c8ff" }}
+      >
+        <strong style={{ color: "#a98fff" }}>AI Recommendation:</strong> {recommendation}
       </div>
     </div>
   );
@@ -554,10 +549,10 @@ function DocumentsPanel() {
     <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-6 shadow-2xl shadow-black/25">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold">Deal Room Materials</h2>
+          <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>Deal Room Materials</h2>
           <p className="mt-1 text-sm text-slate-400">Replace these placeholders with secure document links.</p>
         </div>
-        <button className="rounded-2xl border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold hover:bg-white/15">
+        <button className="rounded-2xl border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold hover:bg-white/15" style={{ fontFamily: "'Poppins', sans-serif" }}>
           Upload Asset
         </button>
       </div>
@@ -565,14 +560,17 @@ function DocumentsPanel() {
         {documents.map((doc) => {
           const Icon = doc.icon;
           return (
-            <div key={doc.title} className="rounded-3xl border border-white/10 bg-slate-950/50 p-5">
+            <div key={doc.title} className="rounded-3xl border border-white/10 p-5" style={{ background: "rgba(2,2,2,0.5)" }}>
               <div className="flex items-start justify-between gap-3">
-                <Icon className="h-6 w-6 text-cyan-200" />
+                <Icon className="h-6 w-6" style={{ color: "#3fe0fd" }} />
                 <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-slate-300">{doc.type}</span>
               </div>
-              <h3 className="mt-5 font-semibold text-white">{doc.title}</h3>
+              <h3 className="mt-5 font-semibold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>{doc.title}</h3>
               <p className="mt-2 text-sm text-slate-400">{doc.status}</p>
-              <button className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-cyan-100">
+              <button
+                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold hover:opacity-75 transition"
+                style={{ color: "#3fe0fd", fontFamily: "'Poppins', sans-serif" }}
+              >
                 Open / Replace <ChevronRight className="h-4 w-4" />
               </button>
             </div>
@@ -594,26 +592,30 @@ function DealRoom({ user, onLogout }: DealRoomProps) {
   const [activeScenario, setActiveScenario] = useState<ScenarioKey>("aria");
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen text-white" style={{ background: "#020202" }}>
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-[-20%] h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
-        <div className="absolute bottom-[-25%] right-[-10%] h-[520px] w-[520px] rounded-full bg-indigo-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-[-20%] h-[620px] w-[620px] -translate-x-1/2 rounded-full blur-3xl" style={{ background: "rgba(117,81,251,0.12)" }} />
+        <div className="absolute bottom-[-25%] right-[-10%] h-[520px] w-[520px] rounded-full blur-3xl" style={{ background: "rgba(63,224,253,0.08)" }} />
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+      <header
+        className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl"
+        style={{ background: "rgba(2,2,2,0.75)" }}
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-300 text-slate-950">
-              <Watch className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl" style={{ background: "#7551fb" }}>
+              <Watch className="h-5 w-5 text-white" />
             </div>
             <div>
-              <div className="text-sm font-bold">TPG × IBIY Deal Room</div>
+              <div className="text-sm font-bold" style={{ fontFamily: "'Poppins', sans-serif" }}>TPG × IBIY Deal Room</div>
               <div className="text-xs text-slate-400">{user.role} Access • {user.email || "demo@dealroom.local"}</div>
             </div>
           </div>
           <button
             onClick={onLogout}
             className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm hover:bg-white/10"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
           >
             Exit
           </button>
@@ -622,16 +624,25 @@ function DealRoom({ user, onLogout }: DealRoomProps) {
 
       <main className="relative mx-auto max-w-7xl space-y-8 px-5 py-8">
         {/* Hero */}
-        <section className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-cyan-300/10 via-white/[0.05] to-indigo-500/10 p-7 shadow-2xl shadow-black/25">
+        <section
+          className="rounded-[2rem] border border-white/10 p-7 shadow-2xl shadow-black/25"
+          style={{ background: "linear-gradient(135deg, rgba(117,81,251,0.12) 0%, rgba(255,255,255,0.03) 50%, rgba(63,224,253,0.08) 100%)" }}
+        >
           <div className="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200">
+              <div
+                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.22em]"
+                style={{ border: "1px solid rgba(117,81,251,0.35)", background: "rgba(117,81,251,0.12)", color: "#a98fff" }}
+              >
                 <ShieldCheck className="h-4 w-4" /> Private Capital Package
               </div>
-              <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl">
+              <h1
+                className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
                 $3MM license-only opportunity. Prepaid multi-vertical deployment engine.
               </h1>
-              <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300" style={{ fontFamily: "'Lato', sans-serif" }}>
                 The capital ask secures license rights. Unit manufacturing and D2C fulfillment are designed to be funded by prepaid allocation embedded into hotel rooms, tickets, mobile issuance, sponsor packages, and R.I.S.E. welcome packets.
               </p>
             </div>
@@ -647,21 +658,6 @@ function DealRoom({ user, onLogout }: DealRoomProps) {
         <ScenarioEngine activeScenario={activeScenario} setActiveScenario={setActiveScenario} />
         <AiRevenuePanel activeScenario={activeScenario} />
         <DocumentsPanel />
-
-        {/* CTA */}
-        <section className="rounded-[2rem] border border-emerald-300/20 bg-emerald-300/10 p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold text-white">Recommended next step</h2>
-              <p className="mt-2 text-sm leading-6 text-emerald-50">
-                Replace demo login with authenticated deal-room access, upload the investor deck and term sheet, then connect scenario exports to CRM for investor follow-up.
-              </p>
-            </div>
-            <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 font-bold text-slate-950 hover:bg-emerald-200">
-              Mark Investor Ready <CheckCircle2 className="h-4 w-4" />
-            </button>
-          </div>
-        </section>
       </main>
     </div>
   );
@@ -678,5 +674,4 @@ export default function TpgIbiyDealRoomUI() {
   );
 }
 
-// Suppress unused import warnings for icons used only in data arrays
-void Plane; void ShoppingCart;
+void Plane; void ShoppingCart; void CheckCircle2;
