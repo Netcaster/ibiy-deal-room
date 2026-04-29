@@ -29,10 +29,9 @@ const CLOSE_SVG = (
   </svg>
 );
 
-const BUBBLE_COLOR = "#6366f1";
-const BUBBLE_DARK  = "#4f46e5";
-
-export function NeuralWidget() {
+export function NeuralWidget({ color = "#6366f1", colorDark = "#4f46e5" }: { color?: string; colorDark?: string }) {
+  const BUBBLE_COLOR = color;
+  const BUBBLE_DARK  = colorDark;
   const [open, setOpen] = useState(false);
 
   return (
