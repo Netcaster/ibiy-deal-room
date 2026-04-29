@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -15,11 +15,13 @@ import {
   KeyRound,
   LockKeyhole,
   Mail,
+  Moon,
   Plane,
   ShieldCheck,
   ShoppingCart,
   Sparkles,
   Star,
+  Sun,
   Ticket,
   TrendingUp,
   Users,
@@ -27,6 +29,75 @@ import {
   Watch,
   Zap,
 } from "lucide-react";
+
+// ─── Theme ───────────────────────────────────────────────────────────────────
+
+interface Tokens {
+  bg: string;
+  navBg: string;
+  cardBg: string;
+  cardBg2: string;
+  text: string;
+  textMuted: string;
+  textSubtle: string;
+  textFaint: string;
+  border: string;
+  orb1: string;
+  orb2: string;
+  inputBg: string;
+  pillBg: string;
+  flowPillBg: string;
+  flowPillText: string;
+}
+
+const dark: Tokens = {
+  bg: "#020202",
+  navBg: "rgba(2,2,2,0.78)",
+  cardBg: "rgba(255,255,255,0.06)",
+  cardBg2: "rgba(2,2,2,0.5)",
+  text: "#ffffff",
+  textMuted: "#cbd5e1",
+  textSubtle: "#94a3b8",
+  textFaint: "#64748b",
+  border: "rgba(255,255,255,0.1)",
+  orb1: "rgba(117,81,251,0.14)",
+  orb2: "rgba(63,224,253,0.09)",
+  inputBg: "rgba(2,2,2,0.6)",
+  pillBg: "rgba(255,255,255,0.1)",
+  flowPillBg: "#ffffff",
+  flowPillText: "#0f172a",
+};
+
+const light: Tokens = {
+  bg: "#fbfbfb",
+  navBg: "rgba(251,251,251,0.88)",
+  cardBg: "rgba(0,0,0,0.03)",
+  cardBg2: "rgba(0,0,0,0.04)",
+  text: "#1a1a1a",
+  textMuted: "#444444",
+  textSubtle: "#777777",
+  textFaint: "#aaaaaa",
+  border: "rgba(0,0,0,0.1)",
+  orb1: "rgba(117,81,251,0.08)",
+  orb2: "rgba(63,224,253,0.06)",
+  inputBg: "rgba(0,0,0,0.04)",
+  pillBg: "rgba(0,0,0,0.06)",
+  flowPillBg: "#7551fb",
+  flowPillText: "#ffffff",
+};
+
+const ThemeCtx = createContext<{ T: Tokens; toggle: () => void }>({
+  T: dark,
+  toggle: () => {},
+});
+
+function useT() {
+  return useContext(ThemeCtx).T;
+}
+
+function useToggle() {
+  return useContext(ThemeCtx).toggle;
+}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -121,6 +192,23 @@ function formatMoney(value: number): string {
   }).format(value);
 }
 
+// ─── ThemeToggle ─────────────────────────────────────────────────────────────
+
+function ThemeToggle({ isDark }: { isDark: boolean }) {
+  const T = useT();
+  const toggle = useToggle();
+  return (
+    <button
+      onClick={toggle}
+      className="flex items-center justify-center rounded-full transition hover:opacity-80"
+      style={{ width: 38, height: 38, border: `1px solid ${T.border}`, background: T.pillBg, color: T.textSubtle }}
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </button>
+  );
+}
+
 // ─── MetricCard ───────────────────────────────────────────────────────────────
 
 interface MetricCardProps {
@@ -131,20 +219,22 @@ interface MetricCardProps {
 }
 
 function MetricCard({ label, value, note, icon: Icon }: MetricCardProps) {
+  const T = useT();
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl border border-white/10 bg-white/[0.06] p-5 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl p-5 shadow-xl shadow-black/10 backdrop-blur"
+      style={{ border: `1px solid ${T.border}`, background: T.cardBg }}
     >
       <div className="flex items-center justify-between gap-4">
         <div className="rounded-2xl p-3" style={{ background: "rgba(117,81,251,0.15)", color: "#3fe0fd" }}>
           <Icon className="h-6 w-6" />
         </div>
-        <div className="text-right text-xs uppercase tracking-[0.18em] text-slate-500">{label}</div>
+        <div className="text-right text-xs uppercase tracking-[0.18em]" style={{ color: T.textFaint }}>{label}</div>
       </div>
-      <div className="mt-5 text-3xl font-semibold tracking-tight text-white">{value}</div>
-      <div className="mt-2 text-sm leading-6 text-slate-300">{note}</div>
+      <div className="mt-5 text-3xl font-semibold tracking-tight" style={{ color: T.text }}>{value}</div>
+      <div className="mt-2 text-sm leading-6" style={{ color: T.textMuted }}>{note}</div>
     </motion.div>
   );
 }
@@ -153,17 +243,31 @@ function MetricCard({ label, value, note, icon: Icon }: MetricCardProps) {
 
 interface PortalLoginProps {
   onEnter: (user: User) => void;
+  isDark: boolean;
 }
 
-function PortalLogin({ onEnter }: PortalLoginProps) {
+function PortalLogin({ onEnter, isDark }: PortalLoginProps) {
+  const T = useT();
+  const toggle = useToggle();
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("Investor");
 
   return (
-    <div className="relative min-h-screen overflow-hidden px-5 py-10 text-white" style={{ background: "#020202" }}>
+    <div className="relative min-h-screen overflow-hidden px-5 py-10" style={{ background: T.bg, color: T.text }}>
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[-12%] h-[520px] w-[520px] -translate-x-1/2 rounded-full blur-3xl" style={{ background: "rgba(117,81,251,0.22)" }} />
-        <div className="absolute bottom-[-20%] right-[-10%] h-[520px] w-[520px] rounded-full blur-3xl" style={{ background: "rgba(63,224,253,0.15)" }} />
+        <div className="absolute left-1/2 top-[-12%] h-[520px] w-[520px] -translate-x-1/2 rounded-full blur-3xl" style={{ background: T.orb1 }} />
+        <div className="absolute bottom-[-20%] right-[-10%] h-[520px] w-[520px] rounded-full blur-3xl" style={{ background: T.orb2 }} />
+      </div>
+
+      {/* Theme toggle top-right */}
+      <div className="absolute right-5 top-5 z-10">
+        <button
+          onClick={toggle}
+          className="flex items-center justify-center rounded-full transition hover:opacity-80"
+          style={{ width: 38, height: 38, border: `1px solid ${T.border}`, background: T.pillBg, color: T.textSubtle }}
+        >
+          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        </button>
       </div>
 
       <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl items-center justify-center">
@@ -175,64 +279,64 @@ function PortalLogin({ onEnter }: PortalLoginProps) {
             >
               <LockKeyhole className="h-4 w-4" /> TPG × IBIY Deal Room
             </div>
-            <h1 className="mt-7 text-5xl font-semibold tracking-tight md:text-7xl" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <h1 className="mt-7 text-5xl font-semibold tracking-tight md:text-7xl" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>
               Private investor access for prepaid wearable infrastructure.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300" style={{ fontFamily: "'Lato', sans-serif" }}>
+            <p className="mt-6 max-w-2xl text-lg leading-8" style={{ fontFamily: "'Lato', sans-serif", color: T.textMuted }}>
               Review the $3MM license opportunity, ARIA 2027 anchor deployment, multi-vertical expansion model, yearly projections, and AI-guided revenue scenarios.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              {[
-                "License-only capital",
-                "Prepaid allocation model",
-                "ARIA 2027 anchor",
-                "R.I.S.E. $19.287M baseline",
-              ].map((x) => (
-                <div key={x} className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-slate-200">
+              {["License-only capital", "Prepaid allocation model", "ARIA 2027 anchor", "R.I.S.E. $19.287M baseline"].map((x) => (
+                <div
+                  key={x}
+                  className="rounded-full px-4 py-2 text-sm"
+                  style={{ border: `1px solid ${T.border}`, background: T.pillBg, color: T.textMuted }}
+                >
                   {x}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-7 shadow-2xl shadow-black/30 backdrop-blur">
+          <div
+            className="rounded-[2rem] p-7 shadow-2xl shadow-black/20 backdrop-blur"
+            style={{ border: `1px solid ${T.border}`, background: T.cardBg }}
+          >
             <div className="flex items-center gap-3">
               <div className="rounded-2xl p-3" style={{ background: "#7551fb" }}>
                 <KeyRound className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>Enter Deal Room</h2>
-                <p className="text-sm text-slate-400">Secure investor access portal.</p>
+                <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>Enter Deal Room</h2>
+                <p className="text-sm" style={{ color: T.textSubtle }}>Secure investor access portal.</p>
               </div>
             </div>
 
-            <form
-              className="mt-7 space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                onEnter({ email, role });
-              }}
-            >
+            <form className="mt-7 space-y-4" onSubmit={(e) => { e.preventDefault(); onEnter({ email, role }); }}>
               <label className="block">
-                <span className="mb-2 block text-sm text-slate-300">Email</span>
-                <div className="flex items-center gap-3 rounded-2xl border border-white/10 px-4 py-3" style={{ background: "rgba(2,2,2,0.6)" }}>
-                  <Mail className="h-5 w-5" style={{ color: "#3fe0fd" }} />
+                <span className="mb-2 block text-sm" style={{ color: T.textMuted }}>Email</span>
+                <div
+                  className="flex items-center gap-3 rounded-2xl px-4 py-3"
+                  style={{ border: `1px solid ${T.border}`, background: T.inputBg }}
+                >
+                  <Mail className="h-5 w-5 flex-shrink-0" style={{ color: "#3fe0fd" }} />
                   <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-transparent text-sm outline-none placeholder:text-slate-600"
+                    className="w-full bg-transparent text-sm outline-none"
                     placeholder="investor@example.com"
+                    style={{ color: T.text, fontFamily: "'Lato', sans-serif" }}
                   />
                 </div>
               </label>
 
               <label className="block">
-                <span className="mb-2 block text-sm text-slate-300">Access Role</span>
+                <span className="mb-2 block text-sm" style={{ color: T.textMuted }}>Access Role</span>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm outline-none"
-                  style={{ background: "rgba(2,2,2,0.6)" }}
+                  className="w-full rounded-2xl px-4 py-3 text-sm outline-none"
+                  style={{ border: `1px solid ${T.border}`, background: T.inputBg, color: T.text }}
                 >
                   <option>Investor</option>
                   <option>Strategic Partner</option>
@@ -250,7 +354,6 @@ function PortalLogin({ onEnter }: PortalLoginProps) {
                 Unlock Portal <ArrowRight className="h-4 w-4" />
               </button>
             </form>
-
           </div>
         </div>
       </div>
@@ -266,6 +369,7 @@ interface ScenarioEngineProps {
 }
 
 function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEngineProps) {
+  const T = useT();
   const [step, setStep] = useState(0);
   const [users, setUsers] = useState(scenarios[activeScenario].users);
   const [allocation, setAllocation] = useState(scenarios[activeScenario].allocation);
@@ -301,7 +405,6 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
       "Flow: Book > Allocate > Float > Produce > Redeem > Activate",
       "Core Thesis: Revenue captured before fulfillment.",
     ].join("\n");
-
     const blob = new Blob([snapshot], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -312,24 +415,21 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
   };
 
   return (
-    <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-6 shadow-2xl shadow-black/25 backdrop-blur">
+    <div className="rounded-[2rem] p-6 shadow-2xl shadow-black/10 backdrop-blur" style={{ border: `1px solid ${T.border}`, background: T.cardBg }}>
       <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <div>
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white"
-            style={{ background: "#7551fb", fontFamily: "'Poppins', sans-serif" }}
-          >
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white" style={{ background: "#7551fb", fontFamily: "'Poppins', sans-serif" }}>
             <ScenarioIcon className="h-4 w-4" /> Scenario Engine
           </div>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>Live investor revenue model</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300" style={{ fontFamily: "'Lato', sans-serif" }}>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>Live investor revenue model</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6" style={{ fontFamily: "'Lato', sans-serif", color: T.textMuted }}>
             Select a deployment, step through the activation flow, then model prepaid revenue, yearly stacking, and sponsor/vendor upside.
           </p>
         </div>
         <button
           onClick={exportSnapshot}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-white/15"
-          style={{ fontFamily: "'Poppins', sans-serif" }}
+          className="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold transition hover:opacity-80"
+          style={{ border: `1px solid ${T.border}`, background: T.pillBg, color: T.text, fontFamily: "'Poppins', sans-serif" }}
         >
           <Download className="h-4 w-4" /> Export Snapshot
         </button>
@@ -343,27 +443,26 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
             <button
               key={key}
               onClick={() => applyScenario(key)}
-              className="rounded-2xl border p-4 text-left transition"
-              style={
-                active
-                  ? { border: "1px solid rgba(117,81,251,0.5)", background: "rgba(117,81,251,0.15)" }
-                  : { border: "1px solid rgba(255,255,255,0.1)", background: "rgba(2,2,2,0.4)" }
+              className="rounded-2xl p-4 text-left transition hover:opacity-90"
+              style={active
+                ? { border: "1px solid rgba(117,81,251,0.5)", background: "rgba(117,81,251,0.15)" }
+                : { border: `1px solid ${T.border}`, background: T.cardBg2 }
               }
             >
-              <Icon className="h-5 w-5" style={{ color: active ? "#3fe0fd" : "#64748b" }} />
-              <div className="mt-3 font-semibold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>{item.label}</div>
-              <div className="mt-1 text-xs leading-5 text-slate-400" style={{ fontFamily: "'Lato', sans-serif" }}>{item.description}</div>
+              <Icon className="h-5 w-5" style={{ color: active ? "#3fe0fd" : T.textSubtle }} />
+              <div className="mt-3 font-semibold" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>{item.label}</div>
+              <div className="mt-1 text-xs leading-5" style={{ fontFamily: "'Lato', sans-serif", color: T.textSubtle }}>{item.description}</div>
             </button>
           );
         })}
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
-        <div className="rounded-[2rem] border border-white/10 p-6 text-center" style={{ background: "rgba(2,2,2,0.5)" }}>
+        <div className="rounded-[2rem] p-6 text-center" style={{ border: `1px solid ${T.border}`, background: T.cardBg2 }}>
           <motion.div
             onClick={() => setStep((s) => (s < activationSteps.length - 1 ? s + 1 : 0))}
             className="relative mx-auto flex h-36 w-36 cursor-pointer items-center justify-center rounded-full"
-            style={{ border: "1px solid rgba(117,81,251,0.5)", background: "#020202" }}
+            style={{ border: "1px solid rgba(117,81,251,0.5)", background: T.cardBg2 }}
             animate={{ scale: step > 0 ? 1.06 : 1 }}
           >
             <Watch className="h-10 w-10" style={{ color: "#3fe0fd" }} />
@@ -378,7 +477,7 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
             )}
           </motion.div>
           <div className="mt-5 text-xl font-semibold" style={{ color: "#3fe0fd", fontFamily: "'Poppins', sans-serif" }}>{activationSteps[step]}</div>
-          <div className="mt-2 text-sm text-slate-400">Click the bracelet node to advance activation.</div>
+          <div className="mt-2 text-sm" style={{ color: T.textSubtle }}>Click the bracelet node to advance activation.</div>
 
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             {activationSteps.slice(0, step + 1).map((x, i) => (
@@ -386,7 +485,8 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
                 key={`${x}-${i}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs text-slate-200"
+                className="rounded-full px-3 py-2 text-xs"
+                style={{ border: `1px solid ${T.border}`, background: T.pillBg, color: T.textMuted }}
               >
                 {x}
               </motion.div>
@@ -403,13 +503,7 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
               <div className="text-xs uppercase tracking-[0.18em]" style={{ color: "#a98fff" }}>Sponsor Trigger</div>
               <div className="mt-3 flex flex-wrap justify-center gap-2">
                 {["Hello Energy", "VIBE Water", "Sponsor SKU"].map((s) => (
-                  <span
-                    key={s}
-                    className="rounded-full px-3 py-1 text-xs font-bold text-white"
-                    style={{ background: "#7551fb", fontFamily: "'Poppins', sans-serif" }}
-                  >
-                    {s}
-                  </span>
+                  <span key={s} className="rounded-full px-3 py-1 text-xs font-bold text-white" style={{ background: "#7551fb", fontFamily: "'Poppins', sans-serif" }}>{s}</span>
                 ))}
               </div>
             </motion.div>
@@ -423,40 +517,33 @@ function ScenarioEngine({ activeScenario, setActiveScenario }: ScenarioEnginePro
             <MetricCard label="Total Modeled" value={formatMoney(totalModeled)} note="Prepaid + modeled upside." icon={TrendingUp} />
           </div>
 
-          <div className="mt-6 rounded-[2rem] border border-white/10 p-5" style={{ background: "rgba(2,2,2,0.5)" }}>
+          <div className="mt-6 rounded-[2rem] p-5" style={{ border: `1px solid ${T.border}`, background: T.cardBg2 }}>
             <div className="grid gap-5 md:grid-cols-2">
-              <label>
-                <div className="mb-2 flex justify-between text-sm text-slate-300">
-                  <span>Users</span><span>{users.toLocaleString()}</span>
-                </div>
-                <input type="range" min="1000" max="1000000" step="1000" value={users} onChange={(e) => setUsers(Number(e.target.value))} className="w-full" />
-              </label>
-              <label>
-                <div className="mb-2 flex justify-between text-sm text-slate-300">
-                  <span>Allocation</span><span>${allocation}</span>
-                </div>
-                <input type="range" min="10" max="100" step="5" value={allocation} onChange={(e) => setAllocation(Number(e.target.value))} className="w-full" />
-              </label>
-              <label>
-                <div className="mb-2 flex justify-between text-sm text-slate-300">
-                  <span>Events / Deployments</span><span>{events}</span>
-                </div>
-                <input type="range" min="1" max="150" step="1" value={events} onChange={(e) => setEvents(Number(e.target.value))} className="w-full" />
-              </label>
-              <label>
-                <div className="mb-2 flex justify-between text-sm text-slate-300">
-                  <span>Sponsor Multiplier</span><span>{sponsorMultiplier.toFixed(2)}x</span>
-                </div>
-                <input type="range" min="1" max="3" step="0.05" value={sponsorMultiplier} onChange={(e) => setSponsorMultiplier(Number(e.target.value))} className="w-full" />
-              </label>
+              {[
+                { label: "Users", val: users.toLocaleString(), min: 1000, max: 1000000, step: 1000, onChange: (v: number) => setUsers(v), value: users },
+                { label: "Allocation", val: `$${allocation}`, min: 10, max: 100, step: 5, onChange: (v: number) => setAllocation(v), value: allocation },
+                { label: "Events / Deployments", val: String(events), min: 1, max: 150, step: 1, onChange: (v: number) => setEvents(v), value: events },
+                { label: "Sponsor Multiplier", val: `${sponsorMultiplier.toFixed(2)}x`, min: 1, max: 3, step: 0.05, onChange: (v: number) => setSponsorMultiplier(v), value: sponsorMultiplier },
+              ].map(({ label, val, min, max, step, onChange, value }) => (
+                <label key={label}>
+                  <div className="mb-2 flex justify-between text-sm" style={{ color: T.textMuted }}>
+                    <span>{label}</span><span>{val}</span>
+                  </div>
+                  <input
+                    type="range" min={min} max={max} step={step} value={value}
+                    onChange={(e) => onChange(Number(e.target.value))}
+                    className="w-full"
+                  />
+                </label>
+              ))}
             </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center gap-2 text-sm text-slate-300">
+          <div className="mt-6 flex flex-wrap items-center gap-2 text-sm">
             {flow.map((x, i) => (
               <React.Fragment key={x}>
-                <span className="rounded-full bg-white px-3 py-1 font-semibold text-slate-950">{x}</span>
-                {i < flow.length - 1 && <ArrowRight className="h-4 w-4 text-slate-500" />}
+                <span className="rounded-full px-3 py-1 font-semibold" style={{ background: T.flowPillBg, color: T.flowPillText, fontFamily: "'Poppins', sans-serif" }}>{x}</span>
+                {i < flow.length - 1 && <ArrowRight className="h-4 w-4" style={{ color: T.textFaint }} />}
               </React.Fragment>
             ))}
           </div>
@@ -473,6 +560,7 @@ interface AiRevenuePanelProps {
 }
 
 function AiRevenuePanel({ activeScenario }: AiRevenuePanelProps) {
+  const T = useT();
   const [venueRooms, setVenueRooms] = useState(5000);
   const [guestsPerRoom, setGuestsPerRoom] = useState(2);
   const [events, setEvents] = useState(12);
@@ -485,44 +573,38 @@ function AiRevenuePanel({ activeScenario }: AiRevenuePanelProps) {
   const blended = yearlyRevenue + sponsorLayer;
 
   const recommendation = useMemo(() => {
-    if (activeScenario === "rise")
-      return "Recommended: treat R.I.S.E. as a baseline enterprise contract, then layer sponsor-funded replenishment and vendor redemption economics.";
-    if (venueRooms >= 5000)
-      return "Recommended: position as anchor deployment with premium sponsor tiers and mandatory package inclusion.";
-    if (events >= 25)
-      return "Recommended: prioritize regional replication and lock annual sponsor commitments against the full event calendar.";
+    if (activeScenario === "rise") return "Recommended: treat R.I.S.E. as a baseline enterprise contract, then layer sponsor-funded replenishment and vendor redemption economics.";
+    if (venueRooms >= 5000) return "Recommended: position as anchor deployment with premium sponsor tiers and mandatory package inclusion.";
+    if (events >= 25) return "Recommended: prioritize regional replication and lock annual sponsor commitments against the full event calendar.";
     return "Recommended: begin with controlled pilot deployment, collect redemption data, then expand into regional event stacking.";
   }, [activeScenario, venueRooms, events]);
 
   return (
-    <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-6 shadow-2xl shadow-black/25">
+    <div className="rounded-[2rem] p-6 shadow-2xl shadow-black/10" style={{ border: `1px solid ${T.border}`, background: T.cardBg }}>
       <div className="flex items-center gap-3">
         <div className="rounded-2xl p-3" style={{ background: "rgba(63,224,253,0.12)", color: "#3fe0fd" }}>
           <Sparkles className="h-6 w-6" />
         </div>
         <div>
-          <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>AI Suggested Revenue Scenarios</h2>
-          <p className="text-sm text-slate-400">Connect to internal model or LLM endpoint for production use.</p>
+          <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>AI Suggested Revenue Scenarios</h2>
+          <p className="text-sm" style={{ color: T.textSubtle }}>Connect to internal model or LLM endpoint for production use.</p>
         </div>
       </div>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
-        <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>Rooms / Units</span><span>{venueRooms.toLocaleString()}</span></div>
-          <input type="range" min="500" max="10000" step="100" value={venueRooms} onChange={(e) => setVenueRooms(Number(e.target.value))} className="w-full" />
-        </label>
-        <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>Guests / Unit</span><span>{guestsPerRoom}</span></div>
-          <input type="range" min="1" max="4" step="1" value={guestsPerRoom} onChange={(e) => setGuestsPerRoom(Number(e.target.value))} className="w-full" />
-        </label>
-        <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>Events / Year</span><span>{events}</span></div>
-          <input type="range" min="1" max="100" step="1" value={events} onChange={(e) => setEvents(Number(e.target.value))} className="w-full" />
-        </label>
-        <label>
-          <div className="mb-2 flex justify-between text-sm text-slate-300"><span>IBIY Allocation</span><span>${allocation}</span></div>
-          <input type="range" min="10" max="100" step="5" value={allocation} onChange={(e) => setAllocation(Number(e.target.value))} className="w-full" />
-        </label>
+        {[
+          { label: "Rooms / Units", val: venueRooms.toLocaleString(), min: 500, max: 10000, step: 100, onChange: (v: number) => setVenueRooms(v), value: venueRooms },
+          { label: "Guests / Unit", val: String(guestsPerRoom), min: 1, max: 4, step: 1, onChange: (v: number) => setGuestsPerRoom(v), value: guestsPerRoom },
+          { label: "Events / Year", val: String(events), min: 1, max: 100, step: 1, onChange: (v: number) => setEvents(v), value: events },
+          { label: "IBIY Allocation", val: `$${allocation}`, min: 10, max: 100, step: 5, onChange: (v: number) => setAllocation(v), value: allocation },
+        ].map(({ label, val, min, max, step, onChange, value }) => (
+          <label key={label}>
+            <div className="mb-2 flex justify-between text-sm" style={{ color: T.textMuted }}>
+              <span>{label}</span><span>{val}</span>
+            </div>
+            <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} className="w-full" />
+          </label>
+        ))}
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-4">
@@ -532,10 +614,7 @@ function AiRevenuePanel({ activeScenario }: AiRevenuePanelProps) {
         <MetricCard label="Blended Upside" value={formatMoney(blended)} note="Includes sponsor layer." icon={Zap} />
       </div>
 
-      <div
-        className="mt-6 rounded-3xl p-5 text-sm leading-7"
-        style={{ border: "1px solid rgba(117,81,251,0.25)", background: "rgba(117,81,251,0.1)", color: "#d4c8ff" }}
-      >
+      <div className="mt-6 rounded-3xl p-5 text-sm leading-7" style={{ border: "1px solid rgba(117,81,251,0.25)", background: "rgba(117,81,251,0.1)", color: "#d4c8ff" }}>
         <strong style={{ color: "#a98fff" }}>AI Recommendation:</strong> {recommendation}
       </div>
     </div>
@@ -545,14 +624,18 @@ function AiRevenuePanel({ activeScenario }: AiRevenuePanelProps) {
 // ─── DocumentsPanel ───────────────────────────────────────────────────────────
 
 function DocumentsPanel() {
+  const T = useT();
   return (
-    <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-6 shadow-2xl shadow-black/25">
+    <div className="rounded-[2rem] p-6 shadow-2xl shadow-black/10" style={{ border: `1px solid ${T.border}`, background: T.cardBg }}>
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>Deal Room Materials</h2>
-          <p className="mt-1 text-sm text-slate-400">Replace these placeholders with secure document links.</p>
+          <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>Deal Room Materials</h2>
+          <p className="mt-1 text-sm" style={{ color: T.textSubtle }}>Replace these placeholders with secure document links.</p>
         </div>
-        <button className="rounded-2xl border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold hover:bg-white/15" style={{ fontFamily: "'Poppins', sans-serif" }}>
+        <button
+          className="rounded-2xl px-4 py-2 text-sm font-semibold transition hover:opacity-80"
+          style={{ border: `1px solid ${T.border}`, background: T.pillBg, color: T.text, fontFamily: "'Poppins', sans-serif" }}
+        >
           Upload Asset
         </button>
       </div>
@@ -560,15 +643,15 @@ function DocumentsPanel() {
         {documents.map((doc) => {
           const Icon = doc.icon;
           return (
-            <div key={doc.title} className="rounded-3xl border border-white/10 p-5" style={{ background: "rgba(2,2,2,0.5)" }}>
+            <div key={doc.title} className="rounded-3xl p-5" style={{ border: `1px solid ${T.border}`, background: T.cardBg2 }}>
               <div className="flex items-start justify-between gap-3">
                 <Icon className="h-6 w-6" style={{ color: "#3fe0fd" }} />
-                <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-slate-300">{doc.type}</span>
+                <span className="rounded-full px-3 py-1 text-xs" style={{ background: T.pillBg, color: T.textMuted }}>{doc.type}</span>
               </div>
-              <h3 className="mt-5 font-semibold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>{doc.title}</h3>
-              <p className="mt-2 text-sm text-slate-400">{doc.status}</p>
+              <h3 className="mt-5 font-semibold" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>{doc.title}</h3>
+              <p className="mt-2 text-sm" style={{ color: T.textSubtle }}>{doc.status}</p>
               <button
-                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold hover:opacity-75 transition"
+                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold transition hover:opacity-70"
                 style={{ color: "#3fe0fd", fontFamily: "'Poppins', sans-serif" }}
               >
                 Open / Replace <ChevronRight className="h-4 w-4" />
@@ -586,47 +669,52 @@ function DocumentsPanel() {
 interface DealRoomProps {
   user: User;
   onLogout: () => void;
+  isDark: boolean;
 }
 
-function DealRoom({ user, onLogout }: DealRoomProps) {
+function DealRoom({ user, onLogout, isDark }: DealRoomProps) {
+  const T = useT();
   const [activeScenario, setActiveScenario] = useState<ScenarioKey>("aria");
 
   return (
-    <div className="min-h-screen text-white" style={{ background: "#020202" }}>
+    <div className="min-h-screen" style={{ background: T.bg, color: T.text }}>
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-[-20%] h-[620px] w-[620px] -translate-x-1/2 rounded-full blur-3xl" style={{ background: "rgba(117,81,251,0.12)" }} />
-        <div className="absolute bottom-[-25%] right-[-10%] h-[520px] w-[520px] rounded-full blur-3xl" style={{ background: "rgba(63,224,253,0.08)" }} />
+        <div className="absolute left-1/2 top-[-20%] h-[620px] w-[620px] -translate-x-1/2 rounded-full blur-3xl" style={{ background: T.orb1 }} />
+        <div className="absolute bottom-[-25%] right-[-10%] h-[520px] w-[520px] rounded-full blur-3xl" style={{ background: T.orb2 }} />
       </div>
 
-      <header
-        className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl"
-        style={{ background: "rgba(2,2,2,0.75)" }}
-      >
+      <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ borderBottom: `1px solid ${T.border}`, background: T.navBg }}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl" style={{ background: "#7551fb" }}>
               <Watch className="h-5 w-5 text-white" />
             </div>
             <div>
-              <div className="text-sm font-bold" style={{ fontFamily: "'Poppins', sans-serif" }}>TPG × IBIY Deal Room</div>
-              <div className="text-xs text-slate-400">{user.role} Access • {user.email || "demo@dealroom.local"}</div>
+              <div className="text-sm font-bold" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>TPG × IBIY Deal Room</div>
+              <div className="text-xs" style={{ color: T.textSubtle }}>{user.role} Access • {user.email || "demo@dealroom.local"}</div>
             </div>
           </div>
-          <button
-            onClick={onLogout}
-            className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm hover:bg-white/10"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            Exit
-          </button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle isDark={isDark} />
+            <button
+              onClick={onLogout}
+              className="rounded-full px-4 py-2 text-sm transition hover:opacity-80"
+              style={{ border: `1px solid ${T.border}`, background: T.pillBg, color: T.text, fontFamily: "'Poppins', sans-serif" }}
+            >
+              Exit
+            </button>
+          </div>
         </div>
       </header>
 
       <main className="relative mx-auto max-w-7xl space-y-8 px-5 py-8">
         {/* Hero */}
         <section
-          className="rounded-[2rem] border border-white/10 p-7 shadow-2xl shadow-black/25"
-          style={{ background: "linear-gradient(135deg, rgba(117,81,251,0.12) 0%, rgba(255,255,255,0.03) 50%, rgba(63,224,253,0.08) 100%)" }}
+          className="rounded-[2rem] p-7 shadow-2xl shadow-black/10"
+          style={{
+            border: `1px solid ${T.border}`,
+            background: `linear-gradient(135deg, rgba(117,81,251,0.12) 0%, ${T.cardBg} 50%, rgba(63,224,253,0.07) 100%)`,
+          }}
         >
           <div className="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
             <div>
@@ -636,13 +724,10 @@ function DealRoom({ user, onLogout }: DealRoomProps) {
               >
                 <ShieldCheck className="h-4 w-4" /> Private Capital Package
               </div>
-              <h1
-                className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
+              <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl" style={{ fontFamily: "'Poppins', sans-serif", color: T.text }}>
                 $3MM license-only opportunity. Prepaid multi-vertical deployment engine.
               </h1>
-              <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300" style={{ fontFamily: "'Lato', sans-serif" }}>
+              <p className="mt-5 max-w-3xl text-lg leading-8" style={{ fontFamily: "'Lato', sans-serif", color: T.textMuted }}>
                 The capital ask secures license rights. Unit manufacturing and D2C fulfillment are designed to be funded by prepaid allocation embedded into hotel rooms, tickets, mobile issuance, sponsor packages, and R.I.S.E. welcome packets.
               </p>
             </div>
@@ -667,10 +752,18 @@ function DealRoom({ user, onLogout }: DealRoomProps) {
 
 export default function TpgIbiyDealRoomUI() {
   const [user, setUser] = useState<User | null>(null);
-  return user ? (
-    <DealRoom user={user} onLogout={() => setUser(null)} />
-  ) : (
-    <PortalLogin onEnter={setUser} />
+  const [isDark, setIsDark] = useState(true);
+  const T = isDark ? dark : light;
+  const ctx = useMemo(() => ({ T, toggle: () => setIsDark((d) => !d) }), [T]);
+
+  return (
+    <ThemeCtx.Provider value={ctx}>
+      {user ? (
+        <DealRoom user={user} onLogout={() => setUser(null)} isDark={isDark} />
+      ) : (
+        <PortalLogin onEnter={setUser} isDark={isDark} />
+      )}
+    </ThemeCtx.Provider>
   );
 }
 
