@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
+import { NeuralWidget } from "./NeuralWidget";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -763,6 +764,7 @@ export default function TpgIbiyDealRoomUI() {
       ) : (
         <PortalLogin onEnter={setUser} isDark={isDark} />
       )}
+      <NeuralWidget />
     </ThemeCtx.Provider>
   );
 }
