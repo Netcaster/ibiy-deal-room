@@ -29,8 +29,8 @@ const CLOSE_SVG = (
   </svg>
 );
 
-const BUBBLE_COLOR = "#22d3ee";
-const BUBBLE_DARK  = "#0891b2";
+const BUBBLE_COLOR = "#6366f1";
+const BUBBLE_DARK  = "#4f46e5";
 
 const quickFacts = [
   "$3MM license-only opportunity",
@@ -179,16 +179,16 @@ export function NeuralWidget() {
                       display: "flex", alignItems: "center", justifyContent: "space-between",
                       padding:        "9px 13px",
                       borderRadius:   10,
-                      background:     "rgba(34,211,238,0.10)",
-                      border:         "1px solid rgba(34,211,238,0.22)",
-                      color:          "#67e8f9",
+                      background:     "rgba(99,102,241,0.10)",
+                      border:         "1px solid rgba(99,102,241,0.22)",
+                      color:          "#a5b4fc",
                       fontSize:       13,
                       fontWeight:     500,
                       textDecoration: "none",
                       transition:     "background 0.15s",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(34,211,238,0.20)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(34,211,238,0.10)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.20)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.10)")}
                   >
                     {link.label}
                     <ArrowRight size={13} />
