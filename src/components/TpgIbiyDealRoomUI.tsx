@@ -355,6 +355,10 @@ function PortalLogin({ onEnter, isDark }: PortalLoginProps) {
                 Unlock Portal <ArrowRight className="h-4 w-4" />
               </button>
             </form>
+
+            <div className="mt-5 rounded-2xl p-4 text-sm leading-6" style={{ border: "1px solid rgba(63,224,253,0.20)", background: "rgba(63,224,253,0.08)", color: "#b2f5fe" }}>
+              Recommended production behavior: send access request to CRM, approve user, issue tokenized link, track document views and scenario exports.
+            </div>
           </div>
         </div>
       </div>
@@ -744,6 +748,21 @@ function DealRoom({ user, onLogout, isDark }: DealRoomProps) {
         <ScenarioEngine activeScenario={activeScenario} setActiveScenario={setActiveScenario} />
         <AiRevenuePanel activeScenario={activeScenario} />
         <DocumentsPanel />
+
+        {/* CTA */}
+        <section className="rounded-[2rem] border border-emerald-300/20 bg-emerald-300/10 p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold text-white">Recommended next step</h2>
+              <p className="mt-2 text-sm leading-6 text-emerald-50">
+                Replace demo login with authenticated deal-room access, upload the investor deck and term sheet, then connect scenario exports to CRM for investor follow-up.
+              </p>
+            </div>
+            <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 font-bold text-slate-950 hover:bg-emerald-200">
+              Mark Investor Ready <CheckCircle2 className="h-4 w-4" />
+            </button>
+          </div>
+        </section>
       </main>
     </div>
   );
